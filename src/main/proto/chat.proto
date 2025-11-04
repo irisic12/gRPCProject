@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.grpcchat";
+option java_outer_classname = "ChatProto";
+
+package chat;
+
+service ChatService {
+  rpc SendMessage (ChatMessage) returns (MessageResponse);
+  rpc ReceiveMessages (ConnectRequest) returns (stream ChatMessage);
+  rpc ChatStream (stream ChatMessage) returns (stream ChatMessage);
+}
+
+message ConnectRequest {
+  string user_id = 1;
+}
+
+message ChatMessage {
+  string id = 1;
+  string user_id = 2;
+  string text = 3;
+  string timestamp = 4;
+  MessageType type = 5;
+}
+
+message MessageResponse {
+  string id = 1;
+  bool success = 2;
+  string message = 3;
+  string timestamp = 4;
+}
+
+enum MessageType {
+  USER_MESSAGE = 0;
+  SYSTEM_MESSAGE = 1;
+  NOTIFICATION = 2;
+}
